@@ -3,178 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta property="og:title" content="究極堂(銅) - 常用貨品落單表">
+    <meta property="og:title" content="究極堂(銅) - 專用電子落單表">
     <meta property="og:description" content="香港宏達有限公司提供">
     
     <title>究極堂(銅) - 專用訂貨單</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
     <style>
-        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f8f9fa; padding-bottom: 100px; }
-        .top-bar { background-color: #212529; color: white; padding: 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .client-name { font-size: 1.3rem; font-weight: 800; color: #ffc107; } 
-        .product-row { background: white; border-bottom: 1px solid #eee; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .p-name { font-size: 1.1rem; font-weight: 700; color: #000; line-height: 1.4; }
-        .qty-control { display: flex; align-items: center; background: #fff; border: 1px solid #ced4da; border-radius: 8px; padding: 2px; width: 130px; justify-content: space-between; height: 45px; flex-shrink: 0; margin-left: 10px; }
-        .qty-btn { width: 40px; height: 100%; border-radius: 6px; background: #f8f9fa; color: #212529; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 1.5rem; user-select: none; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f8f9fa; padding-bottom: 120px; }
+        
+        /* === 1. 頂部固定區域 === */
+        .sticky-header-container {
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            background-color: #212529; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .top-info { padding: 12px 15px 5px 15px; color: white; }
+        .client-name { font-size: 1.3rem; font-weight: 800; color: #ffc107; }
+        
+        .nav-tabs { border-bottom: none; padding: 0 10px; }
+        .nav-link { color: #aaa; font-weight: bold; border: none; border-radius: 10px 10px 0 0; padding: 10px 15px; font-size: 1rem; background: transparent; }
+        .nav-link.active { background-color: #f8f9fa; color: #000; border-bottom: 4px solid #ffc107; }
+        
+        .search-section { background-color: #f8f9fa; padding: 10px 15px; border-bottom: 1px solid #ddd; display: none; }
+        .search-input { border-radius: 20px; border: 1px solid #ccc; padding: 8px 15px; width: 100%; }
+
+        /* === 2. 產品列表 === */
+        .cat-header { 
+            background-color: #ffc107; 
+            color: #000; 
+            font-weight: 800; 
+            padding: 8px 15px; 
+            margin-top: 0; 
+            font-size: 1.1rem; 
+            border-bottom: 1px solid #e0a800;
+        }
+
+        .product-row { background: white; border-bottom: 1px solid #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .p-info { flex: 1; padding-right: 10px; overflow: hidden; }
+        .p-name { font-size: 1.1rem; font-weight: 700; color: #000; line-height: 1.3; margin-bottom: 2px; }
+        .p-code { font-size: 0.85rem; color: #888; font-weight: normal; font-family: Arial, sans-serif; }
+        
+        .qty-control { display: flex; align-items: center; background: #fff; border: 1px solid #ced4da; border-radius: 8px; width: 115px; justify-content: space-between; height: 38px; flex-shrink: 0; }
+        .qty-btn { width: 35px; height: 100%; border-radius: 6px; background: #f8f9fa; color: #212529; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 1.2rem; user-select: none; }
         .qty-btn:active { background: #ffc107; }
-        .qty-input { width: 40px; text-align: center; border: none; font-weight: bold; font-size: 1.3rem; color: #333; background: transparent; }
-        .product-row.selected { background-color: #fffbf0; border-left: 5px solid #ffc107; }
-        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); padding: 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1020; }
-        .total-info { font-size: 1.2rem; font-weight: bold; color: #333; }
-        .btn-whatsapp { background: #25D366; color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
-        .search-container { padding: 10px; background: white; position: sticky; top: 70px; z-index: 980; border-bottom: 1px solid #eee; }
-        .form-control { border-radius: 20px; padding: 10px 20px; background-color: #f1f3f5; border: none; font-size: 1rem; }
+        .qty-input { width: 40px; text-align: center; border: none; font-weight: bold; font-size: 1.1rem; color: #333; background: transparent; padding: 0; }
+        
+        .product-row.selected { background-color: #fff9db; border-left: 5px solid #ffc107; }
+
+        /* === 3. 底部結帳欄 === */
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; box-shadow: 0 -4px 15px rgba(0,0,0,0.15); padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1030; gap: 10px; }
+        
+        .total-box { font-size: 1.1rem; font-weight: bold; color: #333; }
+        .total-num { color: #d32f2f; font-size: 1.4rem; padding: 0 3px; }
+
+        .btn-view-cart { 
+            background-color: #6c757d; 
+            color: white; 
+            border: none; 
+            padding: 10px 18px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 0.95rem; 
+            white-space: nowrap; 
+            transition: all 0.3s ease;
+        }
+        .btn-view-cart.active {
+            background: linear-gradient(45deg, #ff9800, #ff5722);
+            box-shadow: 0 4px 12px rgba(255, 87, 34, 0.4);
+            transform: scale(1.05);
+        }
+
+        .btn-whatsapp { background-color: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+
+        .tab-content { display: none; padding-top: 10px; }
+        .tab-content.active { display: block; }
+        
+        .modal-header { background-color: #212529; color: white; }
+        .modal-title { font-weight: bold; color: #ffc107; }
     </style>
 </head>
 <body>
 
-<div class="top-bar">
-    <div class="d-flex justify-content-between align-items-center">
+<div class="sticky-header-container">
+    <div class="top-info d-flex justify-content-between align-items-center">
         <div>
             <div class="client-name">究極堂(銅)</div>
-            <div style="font-size: 0.9rem; opacity: 0.9; color: #ddd;">常用貨品訂單</div>
+            <div style="font-size: 0.8rem; color: #ccc;">A2724A</div>
         </div>
-        <div style="text-align: right; font-size: 0.85rem; color: #ccc;">
+        <div style="text-align: right; font-size: 0.8rem; color: #ccc;">
             宏達批發<br>Tel: 63771688
         </div>
     </div>
-</div>
+    
+    <ul class="nav nav-tabs">
+        <li class="nav-item" style="flex:1; text-align:center;">
+            <button class="nav-link active" style="width:100%" onclick="switchTab('frequent')">🌟 常用清單</button>
+        </li>
+        <li class="nav-item" style="flex:1; text-align:center;">
+            <button class="nav-link" style="width:100%" onclick="switchTab('all')">📋 全部產品</button>
+        </li>
+    </ul>
 
-<div class="search-container">
-    <input type="text" id="searchInput" class="form-control" placeholder="🔍 在清單中搜尋..." onkeyup="filterProducts()">
-</div>
-
-<div id="product-list">
+    <div class="search-section" id="searchBar">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋產品 / 編號..." onkeyup="filterAllProducts()">
     </div>
+</div>
+
+<div id="tab-frequent" class="tab-content active"></div>
+<div id="tab-all" class="tab-content"></div>
 
 <div class="bottom-bar">
-    <div class="total-info">
-        共 <span id="totalQty" style="color: #d32f2f; font-size: 1.5rem;">0</span> 件貨品
+    <div class="total-box">
+        共 <span id="totalQty" class="total-num">0</span> 件
     </div>
+    <button id="viewCartBtn" class="btn-view-cart" onclick="openCartModal()" disabled>
+        <i class="bi bi-cart3"></i> 查看已選
+    </button>
     <button class="btn-whatsapp" onclick="sendWhatsApp()">
         <i class="bi bi-whatsapp"></i> 發送訂單
     </button>
 </div>
 
+<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">已選產品清單</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="cartModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger me-auto" onclick="clearCart()">
+                    <i class="bi bi-trash"></i> 清空
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">繼續選購</button>
+                <button type="button" class="btn btn-success" onclick="sendWhatsApp()">確認發送</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
-    // === 產品數據庫 (究極堂-銅 專用) ===
-    const products = [
-        { name: "阿根廷赤蝦L1" },
-        { name: "開邊赤蝦9L" },
-        { name: "日本刺身帶子4S" },
-        { name: "油甘魚" },
-        { name: "活赤貝" },
-        { name: "生左口魚邊刺身1kg" },
-        { name: "日式炭燒雞扒" },
-        { name: "北海道鱒魚籽" },
-        { name: "有頭甜蝦3L(40/50)" },
-        { name: "ATC牡丹蝦XL(21/25)" },
-        { name: "軟殼蟹100/120g" },
-        { name: "鰈魚邊刺身(中國)" },
-        { name: "日式煎菜肉餃子" },
-        { name: "日本魷魚26/30" },
-        { name: "左口魚邊刺身500g(日本)" }
+    // === 1. 客戶常用清單 (究極堂-銅 專用代碼) ===
+    const frequentCodes = [
+        "D10JA", "D09D", "B01", "D10JD", "B50B",
+        "D58A", "E03JA", "D19EA", "D10A", "E08",
+        "D12", "D58B", "C14J", "D58C", "D39B"
     ];
 
-    // 生成唯一 ID
-    products.forEach((p, index) => {
-        p.id = "U" + (index + 1).toString().padStart(3, '0');
-    });
-
-    let cart = {}; 
-
-    function init() {
-        renderTable();
-    }
-
-    function renderTable(filterText = "") {
-        const container = document.getElementById('product-list');
-        let html = '';
-        
-        const filteredProducts = products.filter(p => {
-            if (!filterText) return true;
-            return p.name.includes(filterText);
-        });
-
-        filteredProducts.forEach(p => {
-            const qty = cart[p.id] || 0;
-            const rowClass = qty > 0 ? 'selected' : '';
-
-            html += `
-            <div class="product-row ${rowClass}">
-                <div class="p-name">${p.name}</div>
-                <div class="qty-control">
-                    <div class="qty-btn" onclick="updateQty('${p.id}', -1)">-</div>
-                    <input type="text" class="qty-input" id="qty-${p.id}" value="${qty}" readonly>
-                    <div class="qty-btn" onclick="updateQty('${p.id}', 1)">+</div>
-                </div>
-            </div>`;
-        });
-
-        if (filteredProducts.length === 0) {
-            html = '<div class="text-center p-5 text-muted">找不到相關產品</div>';
-        }
-        container.innerHTML = html;
-    }
-
-    function filterProducts() {
-        const text = document.getElementById('searchInput').value;
-        renderTable(text);
-    }
-
-    function updateQty(id, delta) {
-        if (!cart[id]) cart[id] = 0;
-        cart[id] += delta;
-        if (cart[id] <= 0) delete cart[id];
-        
-        const input = document.getElementById(`qty-${id}`);
-        if (input) {
-            input.value = cart[id] || 0;
-            const row = input.closest('.product-row');
-            if (cart[id] > 0) row.classList.add('selected');
-            else row.classList.remove('selected');
-        }
-        calculateTotal();
-    }
-
-    function calculateTotal() {
-        let count = 0;
-        for (let [id, q] of Object.entries(cart)) {
-            count += q; 
-        }
-        document.getElementById('totalQty').innerText = count;
-    }
-
-    // === 發送 WhatsApp (量產格式版 - 修正堂字) ===
-    function sendWhatsApp() {
-        if (Object.keys(cart).length === 0) {
-            alert("請先選擇產品！");
-            return;
-        }
-
-        // --- 客戶資料 ---
-        const customerCode = "A2724A"; 
-        const customerName = "究極堂(銅)";
-        const phone = "85263771688"; 
-
-        // 格式：[編號] [名稱] 換行 訂貨單：
-        let msg = `${customerCode} ${customerName}\n訂貨單：\n\n`;
-
-        const orderedCart = products.filter(p => cart[p.id]);
-        
-        orderedCart.forEach(p => {
-            const q = cart[p.id];
-            // 格式：[空格] [數量] [空格] [產品名]
-            msg += ` ${q}   ${p.name}\n`;
-        });
-
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-        window.open(url, '_blank');
-    }
-
-    init();
-</script>
-
-</body>
-</html>
+    // === 2. 完整資料庫 (V4.3) ===
+    const fullCatalog = [
+        { cat: "環球海膽", items: ["膠盒海膽 (A06F)", "加拿大海膽 (A03)", "澳洲海膽 (A08)", "練海膽醬 (C59)", "凍海膽漿 (D01)", "紫海膽(膠盒) (A07C)", "墨西哥海膽 (A12A)", "墨西哥海膽10格 (A12B)", "本地海膽 (A02)", "凍熟馬糞膽 (A06E)"] },
+        { cat: "日本海膽", items: ["A Grade(直排) (AJ1)", "A Grade(亂排) (AJ4)", "B Grade(亂排) (AJ3)", "鹽水海膽 (AJ6)"] },
+        { cat: "鮮活海產類", items: ["活赤貝 (B01)", "油甘魚 (B50B)", "三文魚 (B14)", "鮮三文魚柳 (B14H)"] },
+        { cat: "日本鮮貨", items: ["鮮大拖羅腹1（赤身附） (B67A)", "鮮大拖羅腹2（赤身附） (B67B)", "鮮吞拿魚赤身（去血合） (B67C)", "間八 (B04)", "細池魚 (B55A)", "金目鯛 (B74C)", "蜜柑鯛 (B20E)", "真鯛 (B20G)", "鯖魚 (B73)", "平目 (B74G)", "魴鮄 (B55D)", "活北寄貝 (B09)", "鮮帶子肉(生食用) (B13)", "令和之怪物 (B08SB)", "太刀魚 (B55E)", "伊左木 (B74F)", "活粒貝 (B02E)", "即食生蠔300g (B08TB)"] },
+        { cat: "新鮮蔬菜/裝飾花葉", items: ["大葉 (C01)", "綠楓葉 (C01FA)", "紅楓葉 (C01FB)", "日本小菊（黃） (C01CA)", "青椒仔 (C01CJ)", "萬能蔥 (C01CH)", "迷你食用玫瑰 (C01CO)", "南瓜 (C05)", "竹葉 (C04)", "三支葉 (C01F)", "花穗紫蘇 (C01CB)", "水菜 (C01CK)", "立桂 (C01CG)", "紅椒絲 (C01D)", "日本番薯 (C05A)"] },
+        { cat: "刺身壽司用料（蝦類）", items: ["ATC 加拿大牡丹蝦 L (D04A)", "ATC 加拿大牡丹蝦 XL (D04B)", "ATC 加拿大牡丹蝦 J (D04C)", "ATC 加拿大牡丹蝦 XJ (D04D)", "阿根廷赤蝦 L1 (D10JA)", "阿根廷赤蝦 L2 (D10JAA)", "俄羅斯牡丹J (D03EB)", "牡丹蝦L(黑盒) (D03A)", "原隻有頭甜蝦 LA (D10F)", "原隻有頭甜蝦 2L (D10)", "原隻有頭甜蝦 3L (D10A)", "原隻有頭甜蝦 4L (D10D)", "天使蝦 (D10M)", "海赤蝦8L (D10JE)", "海赤蝦9L (D10JD)", "無頭甜蝦M50 (D10K)", "無頭甜蝦L50 (D10KC)", "壽司熟蝦 3L (D03DD)", "壽司熟蝦 4L (D03DC)", "虎蝦刺身8g (D10N)", "虎蝦刺身10g (D10NA)", "海膽蝦2L (D03G)", "壽司玻璃蝦3L (D03CA)", "壽司熟蝦 7L (D03DA)", "壽司熟蝦 8L (D03D)"] },
+        { cat: "刺身壽司用料（帶子及貝殼類）", items: ["日本刺身帶子 5S (D09GA)", "日本刺身帶子 4S (D09D)", "日本刺身帶子 3S (D09B)", "日本刺身帶子 2S (D09F)", "日本刺身帶子 S (D09A)", "日本刺身帶子 M (D09)", "日本刺身帶子 L (D09C)", "日本刺身帶子 2L (D09M)", "日本刺身帶子 3L (D09G)", "刺身帶子S 500g (D09AB)", "調味扇貝切片8g (D09LA)", "北寄貝L (D47A)", "北寄貝M (D47)", "北寄貝片 (D47B)", "馬刀貝6g (D07)", "馬刀貝10g (D07A)", "赤貝肉21/25 (D48A)", "赤貝肉16/20 (D48B)", "赤貝片7g (D48E)", "赤貝片8g (D48G)", "刺身海螺片(馬刀貝25g) (D07F)", "刺身赤螺片 (D07BA)", "榮螺片 (D07B)", "象拔蚌片 (D44B)", "冰山蚌片刺身 (D44D)"] },
+        { cat: "刺身壽司用料（魚類）", items: ["急凍油甘魚柳（半邊） (D69)", "螢光魷魚沖漬 (D41AB)", "油甘魚鮫 (D69B)", "凍熟螢光魷魚 (D41F)", "日本紋甲魷魚500g (D39B)", "1K紋甲魷魚 (D39BA)", "壽司墨魚片(8g) (D39)", "刺身池魚片 (D62)", "八爪魚切粒 (D05F)", "中國大八爪 (D05C)", "日本大八爪AAA (D05)", "八爪魚片 (D05B)", "A級八爪魚片 (D05BA)", "左口魚邊刺身1K (D58A)", "左口魚邊刺身20片 (D58)", "特級左口魚邊刺身 (D58C)", "左口魚邊刺身（中國） (D58B)", "臺灣鯛魚柳 (D61C)", "醋青魚柳 (D42)", "安康魚肝 (D31A)", "中國鯛魚柳 (D61B)", "冰頭漬 (D83)", "針魚片 (D25)", "大劍魚腩(有皮) (D18)", "細劍魚腩(有皮) (D18A)", "日本紋甲500g (D39B)", "日本紋甲1kg (D39BA)"] }, 
+        { cat: "刺身壽司用料（吞拿魚/TORO）", items: ["日本大TORO (D17D)", "日本中TORO (D17DD)", "赤身A（日本） (D17G)", "急凍腦天 (D17DE)", "吞拿魚酒盜（紅） (C31H)", "鮪魚腩碎(築地) (D79)", "日本仿拖羅油脂 (D79A)", "吞拿魚4A (D17C)", "印尼中拖羅 (D17E)", "鰹魚酒盜（黃） (C31G)"] },
+        { cat: "刺身壽司用料（魚籽類）", items: ["山十三文魚籽大粒 (D19ER)", "大粒蟹籽 (D21)", "中粒蟹籽 (D21A)", "鱒魚籽（醬油漬） (D19EA)", "黑色飛魚籽 (D21AA)", "250g裝三文魚籽 (D19EK)", "明太子蓉 (D57A)", "希靈魚籽(黃色) (D51)", "日本芝士蟹籽 (D21D)", "希靈魚籽（獨立包裝） (D51B)", "鱘魚子醬5g (D21FC)", "鱘魚子醬10g (D21FA)", "鱘魚子醬30g (D21FB)", "三文魚籽醬油漬(大粒) (D19E)"] }, 
+        { cat: "蒲燒鰻魚/鯖魚", items: ["蒲燒鰻魚 30尾 (D22J)", "蒲燒鰻魚 35尾 (D22L)", "蒲燒鰻魚 40尾 (D22)", "蒲燒鰻魚 45尾 (D22C)", "蒲燒鰻魚 50尾 (D22A)", "蒲燒鰻魚 60尾 (D22D)", "蒲燒鰻魚 80尾 (D22I)", "蒲燒鰻魚 100尾 (D22G)", "鰻魚粒 (D22H)", "原條海鰻(穴子) (D15B)", "開邊青魚100尾 (D42A)", "開邊青魚70尾 (D42AB)", "獨立開邊青魚 (D42AA)", "真空原條鰻魚 (D22E)", "鰻魚片8g (D22FA)", "鰻魚片10g (D22FB)", "鰻魚片16g (D22FC)"] },
+        { cat: "刺身壽司用料（蟹柳/其他）", items: ["仿皇帝淨蟹棒肉（K裝） (D46A)", "AHJIKAN仿皇帝蟹柳 (D46AA)", "泰國仿松葉蟹棒 (D46B)", "白鬆弛熊魚蛋 (D16BB)", "黃鬆弛熊魚蛋 (D16BA)", "臺灣貴妃鮑片 (D66A)", "味付三角油楊 (D68)", "無味油楊 (D68B)", "大崎蟹柳 (D60D)", "大勝蟹柳 (D46C)", "珍寶蟹棒 (D46F)", "鳴門卷 (D16)", "厚燒玉子 (D06A)", "日本壽司蛋 (D06)", "切絲蛋 (D06C)"] },
+        { cat: "軍艦和日式小食", items: ["中華沙律2kg (D52)", "芝麻八爪仔2kg (D50)", "螺肉2kg (D53)", "帶子裙邊2kg (D54)", "芥辣熟八爪魚 (D50A)", "明太子沙律(中國) (D57)", "黃金魷魚 (D49)", "中華沙律400g (D52A)", "味付螺肉400g (D53A)", "芝麻八爪魚400g (D50AA)", "帶子裙邊400g (D54A)", "味附墨魚仔 (D53B)", "芥辣生八爪魚 (D50B)", "龍蝦沙律 (D55)", "櫻花魷魚 (D49B)", "海膽魷魚（日本） (D49C)", "芥辣生八爪100g (D50BB)", "北寄貝沙律 (D56)", "凍柚子皮 (C31F)", "急凍枝豆 (D84)", "燒雪魚棒 (C54)", "味淋魚乾 (C35A)", "紅魚鬆粉 (C67)", "十勝紅豆 (C30E)", "美國LIGO粟米粒 (D96B)", "迷你燒甜薯 (C30)"] },
+        { cat: "急凍海產類--1", items: ["熟帆立貝M (D09HC)", "熟帆立貝L (D09HA)", "熟帆立貝2L (D09H)", "熟帆立貝5S (D09HB)", "半殼元貝8-10cm (D43)", "扇貝柱IQ (熟食) (D02B)", "加拿大翡翠螺 (D29)", "帶殼即食蜆 (D97)", "急凍東風螺 (D07G)", "廣島蠔2L (D64)", "廣島蠔3L (D64AE)", "半殼青口M (F03)", "智利藍青口40/
