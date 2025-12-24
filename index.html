@@ -19,7 +19,7 @@
         .nav-link { color: #aaa; font-weight: bold; border: none; border-radius: 10px 10px 0 0; padding: 10px 15px; font-size: 1rem; background: transparent; }
         .nav-link.active { background-color: #f8f9fa; color: #000; border-bottom: 4px solid #ffc107; }
         
-        /* V5.6 搜尋欄優化 */
+        /* 搜尋欄優化 */
         .search-section { background-color: #f8f9fa; padding: 10px 15px; border-bottom: 1px solid #ddd; display: none; }
         .search-wrapper { position: relative; }
         .search-input { border-radius: 20px; border: 1px solid #ccc; padding: 8px 35px 8px 15px; width: 100%; }
@@ -77,7 +77,7 @@
     </ul>
     <div class="search-section" id="searchBar">
         <div class="search-wrapper">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋產品 / 編號..." onkeyup="filterAllProducts()">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋產品 / 編號..." oninput="filterAllProducts()">
             <i class="bi bi-x-circle-fill btn-clear-search" id="clearSearchBtn" onclick="clearSearch()"></i>
         </div>
     </div>
@@ -148,8 +148,8 @@
     // === 1. 客戶資料設定 (請替換此區塊) ===
     // ==========================================
     
-    // (這裡留空，等待填入下方數據包)
- const customerName = "究極堂(銅)"; 
+    // 請在此處填入客戶名稱
+const customerName = "究極堂(銅)"; 
     const customerCode = "A2724A"; 
     const frequentCodes = [
         "D10JA", "D09D", "B01", "D10JD", "B50B",
@@ -158,11 +158,11 @@
     ];
 
     // ==========================================
-    // ============ V5.6 系統核心 =============
+    // ============ V5.7 系統核心 =============
     // ==========================================
 
     const eelProducts = ["D22J", "D22L", "D22", "D22C", "D22A", "D22D", "D22I", "D22G"];
-    const weightedProducts = ["D61B", "D61C", "D18A", "D17E", "D17C", "B01", "D18"]; // D18 已加回
+    const weightedProducts = ["D61B", "D61C", "D18A", "D17E", "D17C", "B01", "D18"];
 
     const fullCatalog = [
         { cat: "環球海膽", items: ["膠盒海膽 (A06F)", "加拿大海膽 (A03)", "澳洲海膽 (A08)", "練海膽醬 (C59)", "凍海膽漿 (D01)", "紫海膽(膠盒) (A07C)", "墨西哥海膽 (A12A)", "墨西哥海膽10格 (A12B)", "本地海膽 (A02)", "凍熟馬糞膽 (A06E)"] },
@@ -181,7 +181,7 @@
         { cat: "急凍海產類--1", items: ["熟帆立貝M (D09HC)", "熟帆立貝L (D09HA)", "熟帆立貝2L (D09H)", "熟帆立貝5S (D09HB)", "半殼元貝8-10cm (D43)", "扇貝柱IQ (熟食) (D02B)", "加拿大翡翠螺 (D29)", "帶殼即食蜆 (D97)", "急凍東風螺 (D07G)", "廣島蠔2L (D64)", "廣島蠔3L (D64AE)", "半殼青口M (F03)", "智利藍青口40/70 (F03B)", "日式磯煮鮑魚 (D74A)", "滋味鮑魚肉200g (D74C)"] },
         { cat: "急凍海產類--2", items: ["原隻魷魚桶26/30 (D39D)", "原隻魷魚桶(獨立) (D39DA)", "阿根廷魷魚一夜干 (D39HA)", "銀鱈魚5-7磅 (D26)", "韓國半殼蠔 (F01DB)", "急凍殼付生蠔(刺身級) (F01GB)", "原味無骨魚塊 (D61HC)", "日本魷魚一夜干(2隻裝) (D39H)", "煙三文魚500g (D80A)", "煙三文魚100g (D80AA)", "急凍三文魚柳 (D80C)"] },
         { cat: "急凍海產類--3", items: ["多春魚 (D21BA)", "生龍蝦尾 (D71)", "有頭虎蝦 4/6 (D03LEB)", "有頭虎蝦 6/8 (D03LEA)", "有頭虎蝦 8/10 (D03LE)", "有頭虎蝦 13/15 (D03LC)", "有頭虎蝦 16/20 (D03LCA)", "原隻熟蝦 (D03MB)", "天婦羅蝦5L (D10ED)", "急凍熟波斯頓龍蝦 (D70)", "蝦仁磚21/25 (D03LJ)", "蝦仁磚70/90 (D03LK)", "無頭虎蝦16/20 (D03LB)"] },
-        { cat: "急凍海產類--4", items: ["熟帝皇蟹腳4L (D72CA)", "生帝皇蟹腳4L (D72C)", "竹田螃蟹醬 (C58)", "越河蟹肉味噌 (C58AB)", "越河蟹蓋 (C58AC)", "松葉蟹肉碎 (D59D)", "軟殼蟹(大) (D12)", "龍蝦味噌 (C58A)", "混合鱈蟹肉500g (D59H)", "軟殼蟹(細) (D12A)", "二本爪M (D60G)", "二本爪L (D60H)", "熟蟹拐棒500g (D72EC)", "熟雪蟹棒肉L (D72ED)", "罐頭蟹肉CLAW (D59EA)"] },
+        { cat: "急凍海產類--4", items: ["熟帝皇蟹腳4L (D72CA)", "生帝皇蟹腳4L (D72C)", "竹田螃蟹醬 (C58)", "越河蟹肉味噌 (C58AB)", "越河蟹蓋 (C58AC)", "松葉蟹肉碎 (D59D)", "軟殼蟹(少冰，約8隻) (D12)", "龍蝦味噌 (C58A)", "混合鱈蟹肉500g (D59H)", "軟殼蟹(少冰，約9隻) (D12A)", "二本爪M (D60G)", "二本爪L (D60H)", "熟蟹拐棒500g (D72EC)", "熟雪蟹棒肉L (D72ED)", "罐頭蟹肉CLAW (D59EA)"] },
         { cat: "肉類1", items: ["手羽明太子雞翼 (E03)", "手羽芝士豬肉雞翼 (E03A)", "生雞膝軟骨粒 (D88C)", "芝麻雞翼 (E03F)", "明太子雞翼（日本） (E03K)", "無激素雞扒 (M008C)", "日式炭燒雞扒 (E03JA)", "煙鴨胸 (D76A)", "巴西雞扒 (M008E)", "雞中翼 (M008D)", "華味鳥雞腎 (D88GA)", "華味鳥雞心肝 (D88GB)", "CP炸雞軟骨粒1kg (D88DA)", "鹽酥雞 (E11C)", "雞骨腸 (E02)"] },
         { cat: "肉類2", items: ["免治雞肉棒 (D88AD)", "開邊生雞翼串 (D88E)", "炭燒雞腿肉串（盒裝） (D88A)", "秘制五花腩串（碟裝） (D88FG)", "秘制雞皮串（碟裝） (D88FD)", "雞腿肉串（碟裝） (D88FE)", "雞軟骨串 (D88)", "生雞皮串（盒裝） (D88AB)", "生雞腎串(盒裝) (D88AC)", "秘制肥腸（碟裝） (D88FB)", "雞腎串（碟裝） (D88FF)", "羊肉串（碟裝） (D88FH)", "雞亦串（碟裝） (D88FC)"] },
         { cat: "肉類3", items: ["中國鵝肝 (D30)", "原隻紅酒鵝肝 (D30A)", "鵝肝片 (D30D)", "金磚鵝肝片（紅酒味） (D30E)", "一口牛肉粒 (M004)", "和牛漢堡扒 (H02AA)", "和牛腿肉片 (M003M)", "A4和牛肉眼扒 (M003LA)", "A4和牛肉眼（抄碼） (M003LAA)", "中國鴨肝 (D30B)", "美國肥牛片2K裝 (M003BD)", "巴西牛舌(直條) (M007)", "A4和牛西冷扒 (M003LB)", "A4和牛西冷（抄碼） (M003LBA)"] },
@@ -203,7 +203,7 @@
     let pendingProductCode = null; 
 
     function init() {
-        // V5.6 自動填入標題與代碼
+        // V5.6 自動填入
         document.getElementById('displayClientName').innerText = customerName;
         document.getElementById('displayClientCode').innerText = customerCode;
         document.title = customerName + " - 專用訂貨單";
@@ -234,7 +234,6 @@
 
         const searchBar = document.getElementById('searchBar');
         if (tab === 'all') {
-            // V5.6 切換時自動清空並顯示
             clearSearch();
             searchBar.style.display = 'block';
             window.scrollTo(0, 0); 
@@ -262,14 +261,13 @@
         const container = document.getElementById('tab-all');
         let html = '';
         
-        // V5.6 模糊搜尋邏輯
+        // V5.6 模糊搜尋
         const terms = filterText.toUpperCase().split('');
 
         fullCatalog.forEach(category => {
             const filteredItems = category.items.filter(item => {
                 if (!filterText) return true;
                 const itemUpper = item.toUpperCase();
-                // 每個字元都要吻合
                 return terms.every(term => itemUpper.includes(term));
             });
 
@@ -325,7 +323,6 @@
         </div>`;
     }
 
-    // V5.6 搜尋清除按鈕
     function filterAllProducts() {
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearchBtn');
@@ -347,7 +344,6 @@
     }
 
     function updateQty(code, delta) {
-        // 1. 鰻魚 5K 邏輯
         if (eelProducts.includes(code)) {
             let step = 5;
             if (delta > 0 && (!cart[code] || cart[code] === 0)) {
@@ -371,7 +367,6 @@
             return; 
         }
 
-        // 2. 稱重彈窗邏輯
         if (delta > 0 && (!cart[code] || cart[code] === 0) && weightedProducts.includes(code) && !cartUnits[code]) {
             pendingProductCode = code;
             
@@ -386,7 +381,6 @@
             return;
         }
 
-        // 3. 一般增減邏輯
         if (!cart[code]) cart[code] = 0;
         cart[code] += delta;
         
@@ -457,7 +451,7 @@
     }
 
     function calculateTotal() {
-        // V5.6 計算種類數 (Items)
+        // V5.6: 計算種類數
         let count = Object.keys(cart).length;
         document.getElementById('totalQty').innerText = count;
 
@@ -502,6 +496,7 @@
 
         let msg = `${customerCode} ${customerName}\n訂貨單：\n\n`;
 
+        // V5.6 輸出格式
         const formatLine = (code) => {
             const product = productMap[code];
             const name = product ? product.name : code; 
