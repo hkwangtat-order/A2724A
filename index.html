@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta property="og:title" content="究極堂(銅)-專用訂貨單">
-    <meta property="og:description" content="香港宏達有限公司提供">
     
-    <title>究極堂(銅)-專用訂貨單</title>
+    <meta property="og:title" content="究極堂(銅) - 專用電子落單表">
+    <meta property="og:description" content="香港宏達有限公司提供 - 按此進入下單">
+    
+    <title>究極堂(銅) - 專用訂貨單</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
@@ -18,14 +19,11 @@
         .nav-tabs { border-bottom: none; padding: 0 10px; }
         .nav-link { color: #aaa; font-weight: bold; border: none; border-radius: 10px 10px 0 0; padding: 10px 15px; font-size: 1rem; background: transparent; }
         .nav-link.active { background-color: #f8f9fa; color: #000; border-bottom: 4px solid #ffc107; }
-        
-        /* 搜尋欄優化 */
         .search-section { background-color: #f8f9fa; padding: 10px 15px; border-bottom: 1px solid #ddd; display: none; }
         .search-wrapper { position: relative; }
         .search-input { border-radius: 20px; border: 1px solid #ccc; padding: 8px 35px 8px 15px; width: 100%; }
         .btn-clear-search { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #adb5bd; cursor: pointer; font-size: 1.1rem; display: none; z-index: 10; }
         .btn-clear-search:active { color: #495057; }
-
         .cat-header { background-color: #ffc107; color: #000; font-weight: 800; padding: 8px 15px; margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid #e0a800; }
         .product-row { background: white; border-bottom: 1px solid #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
         .p-info { flex: 1; padding-right: 10px; overflow: hidden; }
@@ -145,11 +143,9 @@
 
 <script>
     // ==========================================
-    // === 1. 客戶資料設定 (請替換此區塊) ===
+    // === 1. 客戶資料設定 ===
     // ==========================================
-    
-    // 請在此處填入客戶名稱
-const customerName = "究極堂(銅)"; 
+    const customerName = "究極堂(銅)"; 
     const customerCode = "A2724A"; 
     const frequentCodes = [
         "D10JA", "D09D", "B01", "D10JD", "B50B",
@@ -158,7 +154,7 @@ const customerName = "究極堂(銅)";
     ];
 
     // ==========================================
-    // ============ V5.7 系統核心 =============
+    // ============ 系統核心代碼 =============
     // ==========================================
 
     const eelProducts = ["D22J", "D22L", "D22", "D22C", "D22A", "D22D", "D22I", "D22G"];
@@ -203,7 +199,6 @@ const customerName = "究極堂(銅)";
     let pendingProductCode = null; 
 
     function init() {
-        // V5.6 自動填入
         document.getElementById('displayClientName').innerText = customerName;
         document.getElementById('displayClientCode').innerText = customerCode;
         document.title = customerName + " - 專用訂貨單";
@@ -228,10 +223,8 @@ const customerName = "究極堂(銅)";
     function switchTab(tab) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-        
         document.getElementById('tab-' + tab).classList.add('active');
         event.target.classList.add('active');
-
         const searchBar = document.getElementById('searchBar');
         if (tab === 'all') {
             clearSearch();
@@ -245,7 +238,6 @@ const customerName = "究極堂(銅)";
     function renderFrequent() {
         const container = document.getElementById('tab-frequent');
         let html = '';
-        
         frequentCodes.forEach(code => {
             const product = productMap[code];
             if (product) {
@@ -260,17 +252,13 @@ const customerName = "究極堂(銅)";
     function renderAll(filterText = "") {
         const container = document.getElementById('tab-all');
         let html = '';
-        
-        // V5.6 模糊搜尋
         const terms = filterText.toUpperCase().split('');
-
         fullCatalog.forEach(category => {
             const filteredItems = category.items.filter(item => {
                 if (!filterText) return true;
                 const itemUpper = item.toUpperCase();
                 return terms.every(term => itemUpper.includes(term));
             });
-
             if (filteredItems.length > 0) {
                 if (!filterText) {
                     html += `<div class="cat-header">${category.cat}</div>`;
@@ -280,7 +268,6 @@ const customerName = "究極堂(銅)";
                 });
             }
         });
-
         if (html === '') {
             html = '<div class="text-center p-5 text-muted">找不到相關產品</div>';
         }
@@ -290,7 +277,6 @@ const customerName = "究極堂(銅)";
     function createProductRow(itemStr) {
         let code = "UNKNOWN";
         let displayName = itemStr;
-        
         const match = itemStr.match(/^(.*)\s*\(([A-Za-z0-9]+)\)$/);
         if (match) {
             displayName = match[1];
@@ -298,17 +284,14 @@ const customerName = "究極堂(銅)";
         } else {
             code = itemStr.replace(/[^a-zA-Z0-9]/g, ''); 
         }
-
         const qty = cart[code] || 0;
         const rowClass = qty > 0 ? 'selected' : '';
-        
         let displayValue = qty;
         let inputClass = 'qty-input';
         if (qty > 0 && cartUnits[code] === 'kg') {
             displayValue = qty + ' K'; 
             inputClass += ' unit-kg';
         }
-
         return `
         <div class="product-row ${rowClass}" id="row-${code}">
             <div class="p-info">
@@ -327,7 +310,6 @@ const customerName = "究極堂(銅)";
         const input = document.getElementById('searchInput');
         const clearBtn = document.getElementById('clearSearchBtn');
         const text = input.value;
-
         if (text.length > 0) {
             clearBtn.style.display = 'block';
         } else {
@@ -353,12 +335,10 @@ const customerName = "究極堂(銅)";
                 if (!cart[code]) cart[code] = 0;
                 cart[code] += (delta * step);
             }
-            
             if (cart[code] <= 0) {
                 delete cart[code];
                 delete cartUnits[code];
             }
-            
             updateInputDisplay(code);
             calculateTotal();
             if (document.getElementById('cartModal').classList.contains('show')) {
@@ -366,32 +346,25 @@ const customerName = "究極堂(銅)";
             }
             return; 
         }
-
         if (delta > 0 && (!cart[code] || cart[code] === 0) && weightedProducts.includes(code) && !cartUnits[code]) {
             pendingProductCode = code;
-            
             const pieceBtn = document.getElementById('btn-unit-piece');
             if (code === 'B01') {
                 pieceBtn.innerHTML = '<i class="bi bi-box-seam"></i> 隻<br>(默認)';
             } else {
                 pieceBtn.innerHTML = '<i class="bi bi-box-seam"></i> 件 / 包<br>(默認)';
             }
-
             unitModal.show();
             return;
         }
-
         if (!cart[code]) cart[code] = 0;
         cart[code] += delta;
-        
         if (cart[code] <= 0) {
             delete cart[code];
             delete cartUnits[code];
         }
-        
         updateInputDisplay(code);
         calculateTotal();
-        
         if (document.getElementById('cartModal').classList.contains('show')) {
              renderCartModalItems();
         }
@@ -410,7 +383,6 @@ const customerName = "究極堂(銅)";
         const inputs = document.querySelectorAll(`input[id='qty-${code}']`);
         const qty = cart[code] || 0;
         const unit = cartUnits[code];
-
         inputs.forEach(input => {
             if (qty === 0) {
                 input.value = 0;
@@ -424,7 +396,6 @@ const customerName = "究極堂(銅)";
                     input.classList.remove('unit-kg');
                 }
             }
-
             const row = input.closest('.product-row');
             if (row && !row.classList.contains('modal-row')) {
                 if (qty > 0) row.classList.add('selected');
@@ -436,25 +407,20 @@ const customerName = "究極堂(銅)";
     function clearCart() {
         if (Object.keys(cart).length === 0) return;
         if (!confirm("確定要清空所有已選貨品嗎？")) return;
-
         cart = {}; 
         cartUnits = {}; 
-        
         document.querySelectorAll('.qty-input').forEach(input => {
             input.value = 0;
             input.classList.remove('unit-kg');
         });
         document.querySelectorAll('.product-row').forEach(row => row.classList.remove('selected'));
-
         calculateTotal();
         renderCartModalItems(); 
     }
 
     function calculateTotal() {
-        // V5.6: 計算種類數
         let count = Object.keys(cart).length;
         document.getElementById('totalQty').innerText = count;
-
         const viewBtn = document.getElementById('viewCartBtn');
         if (count > 0) {
             viewBtn.classList.add('active');
@@ -475,7 +441,6 @@ const customerName = "究極堂(銅)";
     function renderCartModalItems() {
         const container = document.getElementById('cartModalBody');
         let html = '';
-        
         if (Object.keys(cart).length === 0) {
             html = '<div class="text-center p-4 text-muted">尚未選擇任何產品</div>';
         } else {
@@ -493,36 +458,27 @@ const customerName = "究極堂(銅)";
             alert("請先選擇產品！");
             return;
         }
-
         let msg = `${customerCode} ${customerName}\n訂貨單：\n\n`;
-
-        // V5.6 輸出格式
         const formatLine = (code) => {
             const product = productMap[code];
             const name = product ? product.name : code; 
             let qtyStr = cart[code].toString(); 
-            
             if (cartUnits[code] === 'kg') {
                 qtyStr += 'K'; 
             }
-
             const paddedQty = qtyStr.padEnd(5, ' '); 
-            
             return ` ${paddedQty} ${name} (${code})\n`;
         };
-
         frequentCodes.forEach(code => {
             if (cart[code]) {
                 msg += formatLine(code);
             }
         });
-
         for (let code in cart) {
             if (!frequentCodes.includes(code)) {
                 msg += formatLine(code);
             }
         }
-
         const url = `https://wa.me/85263771688?text=${encodeURIComponent(msg)}`;
         window.open(url, '_blank');
     }
@@ -532,5 +488,3 @@ const customerName = "究極堂(銅)";
 
 </body>
 </html>
-
-
